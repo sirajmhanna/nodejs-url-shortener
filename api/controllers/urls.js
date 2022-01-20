@@ -128,8 +128,8 @@ exports.shortener = async (req, res) => {
  *       "__v": 0
  *   }
  * }
- * @param { Object } req 
- * @param { Object } res 
+ * @param { Object } req
+ * @param { Object } res
  * @returns { Object }
  */
 exports.getOriginalUrl = async (req, res) => {
@@ -140,7 +140,13 @@ exports.getOriginalUrl = async (req, res) => {
     logger.info("Checking if code exists :: Executing MongoDB Query", {
       code: req.query.code,
     });
-    const findOriginalUrl = await Url.findOne({ code: req.query.code });
+    const findOriginalUrl = await Url.findOneAndUpdate(
+      {
+        code: req.query.code,
+      },
+      { $inc: { views: 1 } },
+      { new: true }
+    );
 
     if (!findOriginalUrl) {
       logger.warn("Code not found", {

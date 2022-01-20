@@ -18,7 +18,7 @@ const URLSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    visitorsCount: Number,
+    views: Number,
   },
   { timestamps: true }
 );
