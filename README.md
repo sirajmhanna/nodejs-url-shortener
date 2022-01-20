@@ -44,6 +44,29 @@ Start the server
 ```bash
   npm run dev 
 ```
+## API Reference
+
+#### URL Shortener
+
+```http
+  POST /api/urls/shortener
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `url` | `string` | **Required**. Original url |
+
+#### Get Original URL
+
+```http
+  GET /api/urls
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `code`      | `string` | Short url code |
+
+
 ## Authors
 
 - [@sirajmhanna](https://www.github.com/sirajmhanna)
