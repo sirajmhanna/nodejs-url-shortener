@@ -33,6 +33,6 @@ app.use((req, res, next) => {
 app.use("/api/server/", require("./api/routes/server"));
 
 // Urls Routes
-app.use("/api/urls/", require("./api/routes/urls"));
+app.use("/", require("./api/routes/urls"));
 
 module.exports = app;
