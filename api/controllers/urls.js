@@ -159,14 +159,6 @@ exports.getOriginalUrl = async (req, res) => {
       });
     }
 
-    // logger.info("Retuning success response", {});
-    // return res.status(200).json({
-    //   status: "success",
-    //   code: 200,
-    //   message: "Url has been fetched successfully",
-    //   data: findOriginalUrl._doc,
-    // });
-
     logger.info("Redirecting", {});
     return res.redirect(findOriginalUrl._doc.originalUrl);
   } catch (error) {
