@@ -12,7 +12,7 @@ route.post(
 
 // Original URL Route
 route.get(
-  "/",
+  "/:code",
   RequestsMiddleware.generateRequestIdentifier,
   UrlsControllers.getOriginalUrl
 );
