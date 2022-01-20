@@ -1,7 +1,7 @@
 const { Logger } = require("../../helpers/logger");
 const Url = require("../models/Url");
 const validUrl = require("valid-url");
-const { nanoid } = require("nanoid");
+const key = require("../../helpers/key");
 require("../../config/mongoose");
 
 /**
@@ -67,7 +67,7 @@ exports.shortener = async (req, res) => {
     }
 
     logger.info("Generating unique code", {});
-    let code = nanoid();
+    let code = key.generate(6);
     while (true) {
       logger.info("Checking if code exists :: Executing MongoDB Query", {
         code,
@@ -79,7 +79,7 @@ exports.shortener = async (req, res) => {
       }
 
       logger.info("Code already exists :: Generating new unique code", {});
-      code = nanoid();
+      code = key.generate(6);
     }
 
     logger.info("Adding short URL :: Executing MongoDB Query", {
@@ -135,14 +135,12 @@ exports.shortener = async (req, res) => {
 exports.getOriginalUrl = async (req, res) => {
   const logger = new Logger(req.requestID, "urls", "getOriginalUrl");
   try {
-    logger.info("Starting Execution", {});
-
     logger.info("Checking if code exists :: Executing MongoDB Query", {
-      code: req.query.code,
+      code: req.params.code,
     });
     const findOriginalUrl = await Url.findOneAndUpdate(
       {
-        code: req.query.code,
+        code: req.params.code,
       },
       { $inc: { views: 1 } },
       { new: true }
@@ -150,24 +148,27 @@ exports.getOriginalUrl = async (req, res) => {
 
     if (!findOriginalUrl) {
       logger.warn("Code not found", {
-        code: req.query.code,
+        code: req.params.code,
       });
 
       return res.status(400).json({
         status: "fail",
         code: 400,
         message: "Code does not exist",
-        data: { code: req.query.code },
+        data: { code: req.params.code },
       });
     }
 
-    logger.info("Retuning success response", {});
-    return res.status(200).json({
-      status: "success",
-      code: 200,
-      message: "Url has been fetched successfully",
-      data: findOriginalUrl._doc,
-    });
+    // logger.info("Retuning success response", {});
+    // return res.status(200).json({
+    //   status: "success",
+    //   code: 200,
+    //   message: "Url has been fetched successfully",
+    //   data: findOriginalUrl._doc,
+    // });
+
+    logger.info("Redirecting", {});
+    return res.redirect(findOriginalUrl._doc.originalUrl);
   } catch (error) {
     logger.error("Server error", { error: error.toString() });
     return res.status(500).json({
