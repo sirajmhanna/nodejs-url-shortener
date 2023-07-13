@@ -23,7 +23,7 @@
     "mongoose": "^6.1.7",
     "morgan": "^1.10.0",
     "nanoid": "^3.2.0",
-    "nodemon": "^2.0.15",
+    "nodemon": "^2.0.22",
     "valid-url": "^1.0.9",
     "winston": "^3.4.0"
   }
